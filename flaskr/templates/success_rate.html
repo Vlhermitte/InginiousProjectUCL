@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+   <html>
+    <head>
+     <meta charset="utf-8">
+        <title>Inginious</title>
+        <link rel="stylesheet" type="text/css" href="../static/style_index.css">
+    </head>
+
+
+     <!-- Chargement de la librairie Javascript à utiliser -->
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+
+    <br>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="LSINF1252.html">LSINF1252</a></li>
+            <li><a href="LSINF1101.html">LSINF1101-PYTHON</a></li>
+            <li><a href="LEPL1402.html">LEPL1402</a></li>
+            <li><a href="studentstat.html">Student's grades</a></li>
+            <li><a href="date.html">Date</a></li>
+            <li><a class="active" href="success_rate.html">Success Rate</a></li>
+            <li><a href="difficulty.html">Difficulty</a></li>
+            <li><a href="https://inginious.org" target="_blank">INGInious.org</a></li>
+
+        </ul>
+
+    </br> </br>
+
+        <div class="dropdown">
+            <button class="dropbtn">Global</button>
+            <div class="dropdown-content">
+                <a href="LSINF1101_success_rate.html">LSINF1101-PYTHON</a>
+                <a href="LSINF1252_success_rate.html">LSINF1252</a>
+                <a href="LEPL1402_success_rate.html">LEPL1402</a>
+            </div>
+        </div>
+
+    </br> </br>
+
+        <header>
+            <h1>Inginious graphic</h1>
+            <h3><img src="https://inginious.info.ucl.ac.be/pages/assets/logo_ingi.png" class="image" width="5%" height="12%"></h3>
+            <h2>Global success rate</h2>
+        </header>
+
+        <button onclick="download_canvas()"> Download as PNG</button>
+
+    <canvas id="graphique" width="200px" height="100px"></canvas>
+      <script>
+            // l'identifiant est celui du canevas
+            var ctx = document.getElementById('graphique').getContext('2d');
+
+            window.chartColors = {
+                red: 'rgb(243,69,69)',
+                green: 'rgba(79,236,14,0.85)'
+            }
+
+            // création du graphique
+
+            var myChart = new Chart(ctx,{
+                    type: 'pie',
+                    data: {
+                          labels:  [{% for item in labels %}
+                                      "{{ item }}",
+                                   {% endfor %}],
+                          datasets: [{
+                              label: "Inginious data",
+                              data: JSON.parse("{{ values }}"),
+                              backgroundColor: [
+                                  window.chartColors.red,
+                                  window.chartColors.green
+                              ],
+                        }]
+                    }
+                });
+      </script>
+
+    <!-- Download Chart Image -->
+    <script>
+        function download_canvas() {
+            var canavas = document.getElementById("graphique");
+            image = canavas.toDataURL("image/png");
+            var link = document.createElement('a');
+            link.download = "GlobalSuccess.png";
+            link.href = image;
+            link.click()
+        }
+    </script>
+
+    </body>
+   </html>
